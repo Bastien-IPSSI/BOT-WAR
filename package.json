@@ -1,0 +1,26 @@
+{
+  "name": "bot-war",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bastien-IPSSI/BOT-WAR.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Bastien-IPSSI/BOT-WAR/issues"
+  },
+  "homepage": "https://github.com/Bastien-IPSSI/BOT-WAR#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "jest": "^30.0.5"
+  }
+}

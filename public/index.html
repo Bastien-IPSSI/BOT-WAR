@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Contrôle du Bot</title>
+</head>
+<body>
+    <h1>Contrôle du Bot</h1>
+    <label>Direction:
+        <select id="move">
+            <option>UP</option>
+            <option>DOWN</option>
+            <option>LEFT</option>
+            <option>RIGHT</option>
+        </select>
+    </label>
+    <label>Action:
+        <select id="action">
+            <option>COLLECT</option>
+            <option>ATTACK</option>
+        </select>
+    </label>
+    <button onclick="sendManual()">Définir Mouvement</button>
+    <button onclick="disableManual()">Revenir au mode Auto</button>
+
+    <script>
+        function sendManual() {
+            const move = document.getElementById("move").value;
+            const action = document.getElementById("action").value;
+            fetch("http://localhost:3000/set-manual", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ move, action })
+            });
+        }
+
+        function disableManual() {
+            fetch("http://localhost:3000/disable-manual", {
+                method: "POST"
+            });
+        }
+    </script>
+</body>
+</html>

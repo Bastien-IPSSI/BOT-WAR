@@ -1,21 +1,33 @@
-export function decideMove(gameState) {
-    const { you, points, megaPoint } = gameState;
+let manualMode = false;
+let manualMove = {
+    move: "UP",
+    action: "COLLECT"
+};
 
-    const target = points.length > 0 ? points[0] : megaPoint;
+export function setManualMove(move, action) {
+    manualMove = { move, action };
+    manualMode = true;
+}
 
-    const dx = target.x - you.x;
-    const dy = target.y - you.y;
+export function disableManualMode() {
+    manualMode = false;
+}
 
-    let move = 'UP';
 
-    if (Math.abs(dx) > Math.abs(dy)) {
-        move = dx > 0 ? 'RIGHT' : 'LEFT';
-    } else if (dy !== 0) {
-        move = dy > 0 ? 'DOWN' : 'UP';
-    }
+function defaultMove() {
+    const directions = ["UP", "DOWN", "LEFT", "RIGHT"];
 
+    const move = directions[Math.floor(Math.random() * directions.length)];
     return {
         move,
         action: 'COLLECT'
     };
 }
+
+export function decideMove() {
+    if (manualMode) {
+        return manualMove;
+    }
+    return defaultMove();
+}
+

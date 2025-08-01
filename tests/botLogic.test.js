@@ -1,14 +1,24 @@
 import { decideMove } from '../src/botLogic.js';
 
-test('returns valid move and action', () => {
-  const mockGameState = {
-    you: { id: 'test-bot', x: 1, y: 1 },
-    points: [{ x: 3, y: 1 }],
-    megaPoint: { x: 5, y: 5 },
-  };
+describe('decideMove', () => {
+  afterEach(() => {
+    disableManualMode();
+  });
 
-  const result = decideMove(mockGameState);
+  test('returns a default move and action in auto mode', () => {
+    const result = decideMove();
 
-  expect(result).toHaveProperty('move');
-  expect(result).toHaveProperty('action');
+    expect(result).toHaveProperty('move');
+    expect(result).toHaveProperty('action');
+    expect(["UP", "DOWN", "LEFT", "RIGHT"]).toContain(result.move);
+  });
+
+  test('returns manual move and action when manual mode is enabled', () => {
+    const manual = { move: 'LEFT', action: 'ATTACK' };
+    setManualMove(manual.move, manual.action);
+
+    const result = decideMove();
+
+    expect(result).toEqual(manual);
+  });
 });

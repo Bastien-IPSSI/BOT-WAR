@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      REDIS_URL: ${{ secrets.REDIS_URL }}
 
     steps:
       - name: Checkout code

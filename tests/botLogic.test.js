@@ -1,5 +1,3 @@
-jest.setTimeout(20000);
-
 import { decideMove } from '../src/botLogic.js';
 import { setManualMove, disableManualMode } from '../src/stateStore.js';
 

@@ -1,4 +1,4 @@
-import { decideMove } from '../src/botLogic.js';
+import { decideMove, setManualMove, disableManualMode } from '../src/botLogic.js';
 
 describe('decideMove', () => {
   afterEach(() => {

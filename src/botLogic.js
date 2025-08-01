@@ -1,33 +1,22 @@
-let manualMode = false;
-let manualMove = {
-    move: "UP",
-    action: "COLLECT"
-};
+import { getBotState } from './stateStore.js';
 
-export function setManualMove(move, action) {
-    manualMove = { move, action };
-    manualMode = true;
+export async function decideMove() {
+  const state = await getBotState();
+
+  if (state.manualMode) {
+    return {
+      move: state.move || "UP",
+      action: state.action || "COLLECT"
+    };
+  }
+
+  return defaultMove();
 }
-
-export function disableManualMode() {
-    manualMode = false;
-}
-
 
 function defaultMove() {
-    const directions = ["UP", "DOWN", "LEFT", "RIGHT"];
-
-    const move = directions[Math.floor(Math.random() * directions.length)];
-    return {
-        move,
-        action: 'COLLECT'
-    };
+  const directions = ["UP", "DOWN", "LEFT", "RIGHT"];
+  return {
+    move: directions[Math.floor(Math.random() * directions.length)],
+    action: 'COLLECT'
+  };
 }
-
-export function decideMove() {
-    if (manualMode) {
-        return manualMove;
-    }
-    return defaultMove();
-}
-

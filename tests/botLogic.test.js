@@ -1,5 +1,6 @@
 import { decideMove } from '../src/botLogic.js';
 import { setManualMove, disableManualMode } from '../src/stateStore.js';
+import { redis } from '../src/stateStore'
 
 describe('decideMove', () => {
   afterEach(async () => {
@@ -22,4 +23,8 @@ describe('decideMove', () => {
 
     expect(result).toEqual(manual);
   });
+});
+
+afterAll(() => {
+  redis.disconnect();
 });

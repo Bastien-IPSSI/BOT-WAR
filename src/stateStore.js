@@ -2,7 +2,7 @@ import Redis from 'ioredis';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const redis = new Redis(process.env.REDIS_URL);
+export const redis = new Redis(process.env.REDIS_URL);
 
 export async function setManualMove(move, action) {
   await redis.set('manualMode', 'true');

@@ -1,26 +1,27 @@
-import fs from 'fs/promises';
+import Redis from 'ioredis';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const FILE = './db.json';
+const redis = new Redis(process.env.REDIS_URL);
 
 export async function setManualMove(move, action) {
-  await fs.writeFile(FILE, JSON.stringify({
-    manualMode: true,
-    move,
-    action
-  }, null, 2));
+  await redis.set('manualMode', 'true');
+  await redis.set('move', move);
+  await redis.set('action', action);
 }
 
 export async function disableManualMode() {
-  await fs.writeFile(FILE, JSON.stringify({
-    manualMode: false
-  }, null, 2));
+  await redis.set('manualMode', 'false');
 }
 
 export async function getBotState() {
-  try {
-    const content = await fs.readFile(FILE, 'utf-8');
-    return JSON.parse(content);
-  } catch {
-    return { manualMode: false };
-  }
+  const manualMode = await redis.get('manualMode');
+  const move = await redis.get('move');
+  const action = await redis.get('action');
+
+  return {
+    manualMode: manualMode === 'true',
+    move: move || 'UP',
+    action: action || 'COLLECT',
+  };
 }

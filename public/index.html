@@ -1,46 +1,149 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Contrôle du Bot</title>
+  <meta charset="UTF-8">
+  <title>Contrôle du Bot</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #e0f7fa, #b2ebf2, #80deea);
+    }
+
+    .wrapper {
+      text-align: center;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .controller {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .dpad {
+      display: grid;
+      grid-template-columns: 60px 60px 60px;
+      grid-template-rows: 60px 60px 60px;
+      gap: 6px;
+    }
+
+    .dpad button {
+      width: 60px;
+      height: 60px;
+      font-size: 20px;
+      font-weight: bold;
+      background: #e0e0e0;
+      border: 2px solid #bbb;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .dpad button:hover {
+      background: #d0d0d0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 20px;
+    }
+
+    .actions button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .actions button:hover {
+      background: #45a049;
+    }
+
+    .reset-btn {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      background: #e53935;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: #c62828;
+    }
+  </style>
 </head>
 <body>
+  <div class="wrapper">
     <h1>Contrôle du Bot</h1>
-    <label>Direction:
-        <select id="move">
-            <option>UP</option>
-            <option>DOWN</option>
-            <option>LEFT</option>
-            <option>RIGHT</option>
-        </select>
-    </label>
-    <label>Action:
-        <select id="action">
-            <option>COLLECT</option>
-            <option>ATTACK</option>
-        </select>
-    </label>
-    <button onclick="sendManual()">Définir Mouvement</button>
-    <button onclick="disableManual()">Revenir au mode Auto</button>
 
-    <script>
-        function sendManual() {
-            const move = document.getElementById("move").value;
-            const action = document.getElementById("action").value;
-            fetch("http://localhost:3000/set-manual", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ move, action })
-            });
-        }
+    <div class="controller">
+      <div class="dpad">
+        <div></div>
+        <button onclick="setMove('UP')">↑</button>
+        <div></div>
+        <button onclick="setMove('LEFT')">←</button>
+        <div></div>
+        <button onclick="setMove('RIGHT')">→</button>
+        <div></div>
+        <button onclick="setMove('DOWN')">↓</button>
+        <div></div>
+      </div>
 
-        function disableManual() {
-            fetch("http://localhost:3000/disable-manual", {
-                method: "POST"
-            });
-        }
-    </script>
+      <div class="actions">
+        <button onclick="sendManual('COLLECT')">Collecter</button>
+        <button onclick="sendManual('ATTACK')">Attaquer</button>
+      </div>
+
+      <button class="reset-btn" onclick="disableManual()">Revenir au mode Auto</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedMove = "UP";
+
+    function setMove(move) {
+      selectedMove = move;
+    }
+
+    function sendManual(action) {
+      fetch("/set-manual", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ move: selectedMove, action })
+      });
+    }
+
+    function disableManual() {
+      fetch("/disable-manual", {
+        method: "POST"
+      });
+    }
+  </script>
 </body>
 </html>
